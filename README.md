@@ -1,4 +1,4 @@
-wandboard
+Wandboard
 =========
 
 Wandboard (Android) Resources.
@@ -10,16 +10,16 @@ The official Wandboard KitKat image has three major flaws:
 
 1. The partition table is highly unusual, placing the third
    primary partition, i.e. `'data'`, **behind** the extended
-   partition, which is broken by design.
+   partition. That is just broken by design.
 
-2. The official Google apps are missing (which isn't the
+2. The official *Google apps* are missing (which isn't the
    fault of the Wandboard folks, btw.)
 
-3. If you managed to get the Google apps running, you can
-   not install paid apps from the PlayStore, since some
+3. If you managed to get the *Google apps* running, you can
+   not install **paid** apps from the *PlayStore*, since some
    mandatory kernel options are missing.
 
-I fixed the issues as follows:
+I tried to fix these issues as follows:
 
 1. I changed the `'data'` partition to be the last *logical*
    partition, thus making it easy to size (i.e. you can take
@@ -28,17 +28,16 @@ I fixed the issues as follows:
    To reflect the change in partition numbering, I compiled
    a new `uramdisk.img` file that does the mounting correctly.
 
-2. I incorporated the official Google apps and SuperSU (root)
+2. I incorporated the official *Google apps* and *SuperSU (root)*
    into my `'system'` archive.
 
 3. I compiled a new `uImage` with the appropriate options.
    Also, I replaced the *Wifi* modules in the `'system'` image
    to match my kernel. Thus, if you just want to use this
-   `uImage`, to keep workable *Wifi*, you need to copy
+   `uImage`, to keep workable *Wifi*, you **need to copy**
    `./Android-4.4.2/kernel/brcmfmac.ko` and 
-   `./Android-4.4.2/kernel/brcmutil.ko` to `./bin/wifi/` in
-   your system partition.
-
+   `./Android-4.4.2/kernel/brcmutil.ko` to the `./bin/wifi/`
+   folder of your system partition.
 
 Android 4.4.2 Setup
 ===================
@@ -56,9 +55,9 @@ write it to your card:
 This will take a while.
 
 Now, repartition the Micro SD card and create appropriate filesystems
-according to the following table. Make sure to leave the first
+according to the following table. **Make sure to leave the first
 7 Megabytes of the card as they are since they contain the
-bootloader.
+bootloader.**
 
 I recommend using GNU parted for the re-partitioning task.
 
