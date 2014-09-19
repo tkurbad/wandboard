@@ -1,15 +1,66 @@
 wandboard
 =========
 
-Wandboard (Android) Resources
+Wandboard (Android) Resources.
+
+Android 4.4.2 considerations
+============================
+
+The official Wandboard KitKat image has three major flaws:
+
+1. The partition table is highly unusual, placing the third
+   primary partition, i.e. `'data'`, **behind** the extended
+   partition, which is broken by design.
+
+2. The official Google apps are missing (which isn't the
+   fault of the Wandboard folks, btw.)
+
+3. If you managed to get the Google apps running, you can
+   not install paid apps from the PlayStore, since some
+   mandatory kernel options are missing.
+
+I fixed the issues as follows:
+
+1. I changed the `'data'` partition to be the last *logical*
+   partition, thus making it easy to size (i.e. you can take
+   the remaining free space of the SD card for it, after
+   creating all the other partitions.)
+   To reflect the change in partition numbering, I compiled
+   a new `uramdisk.img` file that does the mounting correctly.
+
+2. I incorporated the official Google apps and SuperSU (root)
+   into my `'system'` archive.
+
+3. I compiled a new `uImage` with the appropriate options.
+   Also, I replaced the *Wifi* modules in the `'system'` image
+   to match my kernel. Thus, if you just want to use this
+   `uImage`, to keep workable *Wifi*, you need to copy
+   `./Android-4.4.2/kernel/brcmfmac.ko` and 
+   `./Android-4.4.2/kernel/brcmutil.ko` to `./bin/wifi/` in
+   your system partition.
+
 
 Android 4.4.2 Setup
 ===================
 
-Partition the Micro SD card and create appropriate filesystems
-according to the following table.
+First of all, download the official Wandboard KitKat image and
+write it to your card:
 
-I recommend to use GNU parted.
+```bash
+  cd /tmp
+  wget http://wandboard.org/images/downloads/android-4.4.2-wandboard-20140815.zip
+  unzip android-4.4.2-wandboard-20140815.zip
+  sudo dd if=android-4.4.2-wandboard-20140815.img of=/dev/sdX bs=1M
+```
+
+This will take a while.
+
+Now, repartition the Micro SD card and create appropriate filesystems
+according to the following table. Make sure to leave the first
+7 Megabytes of the card as they are since they contain the
+bootloader.
+
+I recommend using GNU parted for the re-partitioning task.
 
 ```
 Number  Start   End     Size    Type      File system  Flags  Label
@@ -28,22 +79,22 @@ of the card.
 Partition number 1 is FAT32:
 
 ```bash
-  mkfs.vfat -F 32 -n imx6 /dev/sdX1
+  sudo mkfs.vfat -F 32 -n imx6 /dev/sdX1
 ```
 
 All other partitions are ext4:
 
 ```bash
-  mkfs.ext4 -L <Label> /dev/sdXY
+  sudo mkfs.ext4 -L <Label> /dev/sdXY
 ```
 Mount partition number 1 to a temporary location and populate
 it with the contents of the ./Android-4.4.2/imx6/ directory:
 
 ```bash
-  mkdir -p /mnt/tmp
-  mount /dev/sdX1 /mnt/tmp
-  rsync -a --progress ./Android-4.4.2/imx6/ /mnt/tmp/
-  umount /mnt/tmp
+  sudo mkdir -p /mnt/tmp
+  sudo mount /dev/sdX1 /mnt/tmp
+  sudo rsync -a --progress ./Android-4.4.2/imx6/ /mnt/tmp/
+  sudo umount /mnt/tmp
 ```
 
 Download the system archive (rooted and with gapps) to a temporary
@@ -58,12 +109,12 @@ Mount partition number 5 to a temporary location and populate
 it with the contents of the previously downloaded archive:
 
 ```bash
-  mount /dev/sdX5 /mnt/tmp
+  sudo mount /dev/sdX5 /mnt/tmp
   cd /mnt/tmp
-  tar xpf /tmp/2014-09-18-wandboard-android-4.4.2-system_rooted+gapps.tar.xz
+  sudo tar xpf /tmp/2014-09-18-wandboard-android-4.4.2-system_rooted+gapps.tar.xz
   cd
-  umount /mnt/tmp
-  sync
+  sudo umount /mnt/tmp
+  sudo sync
 ```
 
 Eject the Micro SD card and insert it into the Wandboard's
