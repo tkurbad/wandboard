@@ -119,4 +119,4 @@ it with the contents of the previously downloaded archive:
 Eject the Micro SD card and insert it into the Wandboard's
 CPU module slot.
 
-Boot up and enjoy Android 4.4. 'KitKat'!
+Boot up and enjoy Android 4.4.2 'KitKat'!
