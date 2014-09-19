@@ -15,7 +15,7 @@ The official Wandboard KitKat image has three major flaws:
 2. The official *Google apps* are missing (which isn't the
    fault of the Wandboard folks, btw.)
 
-3. If you managed to get the *Google apps* running, you can
+3. If you managed to get the *Google apps* running, you could
    not install **paid** apps from the *PlayStore*, since some
    mandatory kernel options are missing.
 
