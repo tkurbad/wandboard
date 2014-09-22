@@ -1,0 +1,46 @@
+
+config EDM
+	bool
+	default n
+
+config EDM_EXPANSION
+	bool
+	default n
+
+config EDM_BASEBOARD_WAND
+	tristate "Support for Wand baseboard"
+	depends on EDM
+	default n
+	select EDM_EXPANSION
+	help
+	  Include support for the devices on the default wand baseboard.
+
+          If you have a standard Wandboard, say Y.
+
+config EDM_BASEBOARD_FAIRY
+	tristate "Support for Fairy baseboard"
+	depends on EDM
+	default n
+	select EDM_EXPANSION
+	help
+	  Include support for TechNexion edm1-fairy baseboard.
+	  Don't forget to config drivers for the isl29023 light sensor, mag3110 compass, ads7846 touchscreen, lis331D accelerometer,
+	  ds3117 RTC and the audio codec (either a sgtl5000 or a tlv320, depending on jumpers)
+
+          If you have one, say Y.
+
+config EDM_EXPANSION_FWBADAPT
+	tristate "Support for Future WandBoard expansion board"
+	depends on EDM_EXPANSION
+	default n
+	help
+	  Include support for Future WandBoard Adapter FWBADAPT-7WVGA-PCAP ("TN55") with Prism touchscreen and 7" WVGA
+	  Don't forget to select the Prism touchscreen driver!
+
+config EDM_EXPANSION_WANDQC
+	tristate "Support for WandBoard QC expansion board"
+	depends on EDM_EXPANSION
+	default n
+	help
+	  Include support for WandBoard Factory Q/C ("TN57") expansion board
+	  This board features a TSC2046 touchscreen, don't forget to select the ADS7846 driver as well!
