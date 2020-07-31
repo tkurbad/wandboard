@@ -1,4 +1,0 @@
-bootargs_base=console=ttymxc0,115200 androidboot.console=ttymxc0 androidboot.hardware=freescale vmalloc=400M
-video_mode=display0=dev=lcd0,mode=SEIKO-WVGA@60,if=RGB666,bpp=32 fbmem=12M
-expansion=fwbadapt
-baseboard=wand
